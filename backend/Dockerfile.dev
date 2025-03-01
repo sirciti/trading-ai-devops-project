@@ -1,0 +1,13 @@
+FROM node:16
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+# Nous ne copions pas les fichiers car nous utiliserons un volume
+
+EXPOSE 5000
+
+CMD ["npm", "run", "dev"]
