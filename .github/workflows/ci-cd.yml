@@ -10,22 +10,22 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '18'
     
     - name: Install Backend Dependencies
       run: |
         cd backend
-        npm install
+        npm ci
     
     - name: Backend Linting
       run: |
         cd backend
-        echo "Linting check would run here"
+        npm run lint
     
     - name: Backend Tests
       run: |
@@ -42,23 +42,49 @@ jobs:
     - name: Install Frontend Dependencies
       run: |
         cd frontend
-        npm install
+        npm ci
     
     - name: Frontend Linting
       run: |
         cd frontend
-        echo "Linting check would run here"
+        npm run lint
     
     - name: Frontend Tests
       run: |
         cd frontend
         npm test
 
+    - name: Check for vulnerabilities
+      run: |
+        cd backend
+        npm audit
+        cd ../frontend
+        npm audit
+
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend
+        npm ci
+        cd ../frontend
+        npm ci
+    
+    - name: Build Project
+      run: |
+        cd backend
+        npm run build
+        cd ../frontend
+        npm run build
     
     - name: Build Backend Docker Image
       run: |
@@ -74,13 +100,14 @@ jobs:
       run: |
         docker-compose build
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: Deploy Simulation
-      run: |
-        echo "Deployment would happen here in a real scenario"
-        echo "This will be configured to deploy to AWS when we have access"
+  #   - name: Deploy Simulation
+  #     run: |
+  #       echo "Deployment would happen here in a real scenario"
+  #       echo "This will be configured to deploy to AWS when we have access"
+

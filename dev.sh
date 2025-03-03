@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e  # Exit immediately if a command exits with a non-zero status.
+
 echo "Starting Trading AI DevOps development environment..."
 
 # Vérifier si docker est installé
@@ -14,10 +16,16 @@ if ! command -v docker-compose &> /dev/null; then
     exit 1
 fi
 
-# Arrêter les conteneurs existants si nécessaire
-docker-compose down
+# Nettoyer l'environnement
+echo "Nettoyage de l'environnement..."
+docker-compose down --volumes --remove-orphans
 
 # Construire et démarrer les conteneurs
-docker-compose up --build
+echo "Construction et démarrage des conteneurs..."
+docker-compose up --build -d
 
-# Ce script ne terminera pas tant que docker-compose n'est pas arrêté
+# Vérifier l'état des conteneurs
+echo "Vérification de l'état des conteneurs..."
+docker-compose ps
+
+echo "L'environnement de développement est prêt. Utilisez 'docker-compose logs -f' pour voir les logs."

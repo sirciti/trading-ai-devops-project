@@ -1,12 +1,10 @@
-FROM node:16
+FROM node:18.3
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
 RUN npm install
-
-# Nous ne copions pas les fichiers car nous utiliserons un volume
 
 EXPOSE 5000
 

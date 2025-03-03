@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const tradeSchema = new mongoose.Schema({
+  coinId: Number,
+  action: String,
+  amount: Number,
+  price: Number,
+  timestamp: Date
+});
+
 const traderSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,6 +27,7 @@ const traderSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  trades: [tradeSchema],  // Ajout du tableau de trades
   createdAt: {
     type: Date,
     default: Date.now
