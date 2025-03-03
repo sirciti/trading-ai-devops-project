@@ -11,11 +11,10 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-// Dans un environnement réel, cette URL viendrait d'une variable d'environnement
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/tradingai';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('Connecté à MongoDB'))
+  .then(() => console.log('Connecté à MongoDB Atlas'))
   .catch(err => console.error('Erreur de connexion à MongoDB:', err));
 
 // Routes
